@@ -15,12 +15,12 @@ import (
 )
 
 // Login is the resolver for the login field.
-func (r *authOpsResolver) Login(ctx context.Context, obj *model.AuthOps, email string, password string) (interface{}, error) {
+func (r *authOpsResolver) Login(ctx context.Context, obj *model.AuthOps, email string, password string) (*model.AuthResponse, error) {
 	return service.UserLogin(ctx, email, password)
 }
 
 // Register is the resolver for the register field.
-func (r *authOpsResolver) Register(ctx context.Context, obj *model.AuthOps, input model.NewUser) (interface{}, error) {
+func (r *authOpsResolver) Register(ctx context.Context, obj *model.AuthOps, input model.NewUser) (*model.AuthResponse, error) {
 	return service.UserRegister(ctx, input)
 }
 

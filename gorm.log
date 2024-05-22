@@ -1,49 +1,97 @@
 
-2024/05/19 14:10:16 [32m/home/gerald/Desktop/scripts/project-resume/resume-backend/migration/migration.go:10
-[0m[33m[5.019ms] [34;1m[rows:1][0m SELECT count(*) FROM information_schema.tables WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'users' AND table_type = 'BASE TABLE'
+2024/05/21 19:57:15 [32m/home/gerald/Desktop/scripts/project-resume/resume-backend/migration/migration.go:10
+[0m[33m[276.544ms] [34;1m[rows:1][0m SELECT count(*) FROM information_schema.tables WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'users' AND table_type = 'BASE TABLE'
 
-2024/05/19 14:10:16 [32m/home/gerald/Desktop/scripts/project-resume/resume-backend/migration/migration.go:10
-[0m[33m[0.507ms] [34;1m[rows:1][0m SELECT CURRENT_DATABASE()
+2024/05/21 19:57:15 [32m/home/gerald/Desktop/scripts/project-resume/resume-backend/migration/migration.go:10
+[0m[33m[1.774ms] [34;1m[rows:1][0m SELECT CURRENT_DATABASE()
 
-2024/05/19 14:10:16 [32m/home/gerald/Desktop/scripts/project-resume/resume-backend/migration/migration.go:10
-[0m[33m[13.437ms] [34;1m[rows:-][0m SELECT c.column_name, c.is_nullable = 'YES', c.udt_name, c.character_maximum_length, c.numeric_precision, c.numeric_precision_radix, c.numeric_scale, c.datetime_precision, 8 * typlen, c.column_default, pd.description, c.identity_increment FROM information_schema.columns AS c JOIN pg_type AS pgt ON c.udt_name = pgt.typname LEFT JOIN pg_catalog.pg_description as pd ON pd.objsubid = c.ordinal_position AND pd.objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = c.table_name AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = c.table_schema)) where table_catalog = 'pg_db' AND table_schema = CURRENT_SCHEMA() AND table_name = 'users'
+2024/05/21 19:57:15 [32m/home/gerald/Desktop/scripts/project-resume/resume-backend/migration/migration.go:10
+[0m[33m[170.304ms] [34;1m[rows:-][0m SELECT c.column_name, c.is_nullable = 'YES', c.udt_name, c.character_maximum_length, c.numeric_precision, c.numeric_precision_radix, c.numeric_scale, c.datetime_precision, 8 * typlen, c.column_default, pd.description, c.identity_increment FROM information_schema.columns AS c JOIN pg_type AS pgt ON c.udt_name = pgt.typname LEFT JOIN pg_catalog.pg_description as pd ON pd.objsubid = c.ordinal_position AND pd.objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = c.table_name AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = c.table_schema)) where table_catalog = 'pg_db' AND table_schema = CURRENT_SCHEMA() AND table_name = 'users'
 
-2024/05/19 14:10:16 [32m/home/gerald/Desktop/scripts/project-resume/resume-backend/migration/migration.go:10
-[0m[33m[0.581ms] [34;1m[rows:-][0m SELECT * FROM "users" LIMIT 5
+2024/05/21 19:57:15 [32m/home/gerald/Desktop/scripts/project-resume/resume-backend/migration/migration.go:10
+[0m[33m[42.265ms] [34;1m[rows:-][0m SELECT * FROM "users" LIMIT 5
 
-2024/05/19 14:10:16 [32m/home/gerald/Desktop/scripts/project-resume/resume-backend/migration/migration.go:10
-[0m[33m[10.578ms] [34;1m[rows:-][0m SELECT constraint_name FROM information_schema.table_constraints tc JOIN information_schema.constraint_column_usage AS ccu USING (constraint_schema, constraint_catalog, table_name, constraint_name) JOIN information_schema.columns AS c ON c.table_schema = tc.constraint_schema AND tc.table_name = c.table_name AND ccu.column_name = c.column_name WHERE constraint_type IN ('PRIMARY KEY', 'UNIQUE') AND c.table_catalog = 'pg_db' AND c.table_schema = CURRENT_SCHEMA() AND c.table_name = 'users' AND constraint_type = 'UNIQUE'
+2024/05/21 19:57:15 [32m/home/gerald/Desktop/scripts/project-resume/resume-backend/migration/migration.go:10
+[0m[33m[50.592ms] [34;1m[rows:-][0m SELECT constraint_name FROM information_schema.table_constraints tc JOIN information_schema.constraint_column_usage AS ccu USING (constraint_schema, constraint_catalog, table_name, constraint_name) JOIN information_schema.columns AS c ON c.table_schema = tc.constraint_schema AND tc.table_name = c.table_name AND ccu.column_name = c.column_name WHERE constraint_type IN ('PRIMARY KEY', 'UNIQUE') AND c.table_catalog = 'pg_db' AND c.table_schema = CURRENT_SCHEMA() AND c.table_name = 'users' AND constraint_type = 'UNIQUE'
 
-2024/05/19 14:10:16 [32m/home/gerald/Desktop/scripts/project-resume/resume-backend/migration/migration.go:10
-[0m[33m[7.118ms] [34;1m[rows:-][0m SELECT c.column_name, constraint_name, constraint_type FROM information_schema.table_constraints tc JOIN information_schema.constraint_column_usage AS ccu USING (constraint_schema, constraint_catalog, table_name, constraint_name) JOIN information_schema.columns AS c ON c.table_schema = tc.constraint_schema AND tc.table_name = c.table_name AND ccu.column_name = c.column_name WHERE constraint_type IN ('PRIMARY KEY', 'UNIQUE') AND c.table_catalog = 'pg_db' AND c.table_schema = CURRENT_SCHEMA() AND c.table_name = 'users'
+2024/05/21 19:57:15 [32m/home/gerald/Desktop/scripts/project-resume/resume-backend/migration/migration.go:10
+[0m[33m[13.371ms] [34;1m[rows:-][0m SELECT c.column_name, constraint_name, constraint_type FROM information_schema.table_constraints tc JOIN information_schema.constraint_column_usage AS ccu USING (constraint_schema, constraint_catalog, table_name, constraint_name) JOIN information_schema.columns AS c ON c.table_schema = tc.constraint_schema AND tc.table_name = c.table_name AND ccu.column_name = c.column_name WHERE constraint_type IN ('PRIMARY KEY', 'UNIQUE') AND c.table_catalog = 'pg_db' AND c.table_schema = CURRENT_SCHEMA() AND c.table_name = 'users'
 
-2024/05/19 14:10:16 [32m/home/gerald/Desktop/scripts/project-resume/resume-backend/migration/migration.go:10
-[0m[33m[1.435ms] [34;1m[rows:-][0m SELECT a.attname as column_name, format_type(a.atttypid, a.atttypmod) AS data_type
+2024/05/21 19:57:15 [32m/home/gerald/Desktop/scripts/project-resume/resume-backend/migration/migration.go:10
+[0m[33m[15.101ms] [34;1m[rows:-][0m SELECT a.attname as column_name, format_type(a.atttypid, a.atttypmod) AS data_type
 		FROM pg_attribute a JOIN pg_class b ON a.attrelid = b.oid AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA())
 		WHERE a.attnum > 0 -- hide internal columns
 		AND NOT a.attisdropped -- hide deleted columns
 		AND b.relname = 'users'
 
-2024/05/19 14:10:16 [32m/home/gerald/Desktop/scripts/project-resume/resume-backend/migration/migration.go:10
-[0m[33m[3.519ms] [34;1m[rows:0][0m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'users' AND column_name = 'id') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'users' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))
+2024/05/21 19:57:15 [32m/home/gerald/Desktop/scripts/project-resume/resume-backend/migration/migration.go:10
+[0m[33m[20.153ms] [34;1m[rows:0][0m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'users' AND column_name = 'id') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'users' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))
 
-2024/05/19 14:10:16 [32m/home/gerald/Desktop/scripts/project-resume/resume-backend/migration/migration.go:10
-[0m[33m[2.243ms] [34;1m[rows:0][0m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'users' AND column_name = 'name') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'users' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))
+2024/05/21 19:57:15 [32m/home/gerald/Desktop/scripts/project-resume/resume-backend/migration/migration.go:10
+[0m[33m[3.011ms] [34;1m[rows:0][0m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'users' AND column_name = 'name') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'users' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))
 
-2024/05/19 14:10:16 [32m/home/gerald/Desktop/scripts/project-resume/resume-backend/migration/migration.go:10
-[0m[33m[2.221ms] [34;1m[rows:0][0m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'users' AND column_name = 'email') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'users' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))
+2024/05/21 19:57:15 [32m/home/gerald/Desktop/scripts/project-resume/resume-backend/migration/migration.go:10
+[0m[33m[2.787ms] [34;1m[rows:0][0m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'users' AND column_name = 'email') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'users' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))
 
-2024/05/19 14:10:16 [32m/home/gerald/Desktop/scripts/project-resume/resume-backend/migration/migration.go:10
-[0m[33m[1.950ms] [34;1m[rows:0][0m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'users' AND column_name = 'password') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'users' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))
+2024/05/21 19:57:15 [32m/home/gerald/Desktop/scripts/project-resume/resume-backend/migration/migration.go:10
+[0m[33m[2.762ms] [34;1m[rows:0][0m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'users' AND column_name = 'password') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'users' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))
 
-2024/05/19 14:10:20 [32m/home/gerald/Desktop/scripts/project-resume/resume-backend/service/user.go:48
-[0m[33m[2.087ms] [34;1m[rows:1][0m SELECT * FROM "users" WHERE email LIKE 'g@g.g' LIMIT 1
+2024/05/21 21:14:00 [31;1m/home/gerald/Desktop/scripts/project-resume/resume-backend/service/user.go:48 [35;1mrecord not found
+[0m[33m[59.870ms] [34;1m[rows:0][0m SELECT * FROM "users" WHERE email LIKE 'g.g' LIMIT 1
 
-2024/05/19 14:10:36 [32m/home/gerald/Desktop/scripts/project-resume/resume-backend/service/user.go:48
-[0m[33m[1.812ms] [34;1m[rows:1][0m SELECT * FROM "users" WHERE email LIKE 'g@g.g' LIMIT 1
+2024/05/21 21:14:00 [31;1m/home/gerald/Desktop/scripts/project-resume/resume-backend/service/user.go:48 [35;1mrecord not found
+[0m[33m[1.256ms] [34;1m[rows:0][0m SELECT * FROM "users" WHERE email LIKE 'g.g' LIMIT 1
 
-2024/05/19 14:11:04 [32m/home/gerald/Desktop/scripts/project-resume/resume-backend/service/user.go:48
-[0m[33m[1.786ms] [34;1m[rows:1][0m SELECT * FROM "users" WHERE email LIKE 'g@g.g' LIMIT 1
+2024/05/21 21:14:22 [32m/home/gerald/Desktop/scripts/project-resume/resume-backend/service/user.go:48
+[0m[33m[2.522ms] [34;1m[rows:1][0m SELECT * FROM "users" WHERE email LIKE 'g@g.g' LIMIT 1
 
-2024/05/19 14:11:26 [32m/home/gerald/Desktop/scripts/project-resume/resume-backend/service/user.go:48
-[0m[33m[1.611ms] [34;1m[rows:1][0m SELECT * FROM "users" WHERE email LIKE 'g@g.g' LIMIT 1
+2024/05/21 21:18:05 [32m/home/gerald/Desktop/scripts/project-resume/resume-backend/service/user.go:48
+[0m[33m[2.477ms] [34;1m[rows:1][0m SELECT * FROM "users" WHERE email LIKE 'g@g.g' LIMIT 1
+
+2024/05/21 21:18:26 [32m/home/gerald/Desktop/scripts/project-resume/resume-backend/service/user.go:48
+[0m[33m[1.826ms] [34;1m[rows:1][0m SELECT * FROM "users" WHERE email LIKE 'g@g.g' LIMIT 1
+
+2024/05/21 21:19:10 [32m/home/gerald/Desktop/scripts/project-resume/resume-backend/service/user.go:48
+[0m[33m[1.695ms] [34;1m[rows:1][0m SELECT * FROM "users" WHERE email LIKE 'g@g.g' LIMIT 1
+
+2024/05/21 21:19:13 [32m/home/gerald/Desktop/scripts/project-resume/resume-backend/service/user.go:48
+[0m[33m[1.563ms] [34;1m[rows:1][0m SELECT * FROM "users" WHERE email LIKE 'g@g.g' LIMIT 1
+
+2024/05/21 21:19:14 [32m/home/gerald/Desktop/scripts/project-resume/resume-backend/service/user.go:48
+[0m[33m[0.647ms] [34;1m[rows:1][0m SELECT * FROM "users" WHERE email LIKE 'g@g.g' LIMIT 1
+
+2024/05/21 21:19:16 [32m/home/gerald/Desktop/scripts/project-resume/resume-backend/service/user.go:48
+[0m[33m[1.726ms] [34;1m[rows:1][0m SELECT * FROM "users" WHERE email LIKE 'g@g.g' LIMIT 1
+
+2024/05/21 21:19:16 [32m/home/gerald/Desktop/scripts/project-resume/resume-backend/service/user.go:48
+[0m[33m[0.522ms] [34;1m[rows:1][0m SELECT * FROM "users" WHERE email LIKE 'g@g.g' LIMIT 1
+
+2024/05/21 21:19:20 [32m/home/gerald/Desktop/scripts/project-resume/resume-backend/service/user.go:48
+[0m[33m[2.283ms] [34;1m[rows:1][0m SELECT * FROM "users" WHERE email LIKE 'g@g.g' LIMIT 1
+
+2024/05/21 21:21:58 [32m/home/gerald/Desktop/scripts/project-resume/resume-backend/service/user.go:48
+[0m[33m[2.294ms] [34;1m[rows:1][0m SELECT * FROM "users" WHERE email LIKE 'g@g.g' LIMIT 1
+
+2024/05/21 21:21:58 [32m/home/gerald/Desktop/scripts/project-resume/resume-backend/service/user.go:48
+[0m[33m[0.597ms] [34;1m[rows:1][0m SELECT * FROM "users" WHERE email LIKE 'g@g.g' LIMIT 1
+
+2024/05/21 21:21:59 [32m/home/gerald/Desktop/scripts/project-resume/resume-backend/service/user.go:48
+[0m[33m[1.119ms] [34;1m[rows:1][0m SELECT * FROM "users" WHERE email LIKE 'g@g.g' LIMIT 1
+
+2024/05/21 21:21:59 [32m/home/gerald/Desktop/scripts/project-resume/resume-backend/service/user.go:48
+[0m[33m[0.593ms] [34;1m[rows:1][0m SELECT * FROM "users" WHERE email LIKE 'g@g.g' LIMIT 1
+
+2024/05/21 21:22:52 [31;1m/home/gerald/Desktop/scripts/project-resume/resume-backend/service/user.go:48 [35;1mrecord not found
+[0m[33m[2.221ms] [34;1m[rows:0][0m SELECT * FROM "users" WHERE email LIKE 'qwe' LIMIT 1
+
+2024/05/21 21:22:52 [31;1m/home/gerald/Desktop/scripts/project-resume/resume-backend/service/user.go:48 [35;1mrecord not found
+[0m[33m[0.977ms] [34;1m[rows:0][0m SELECT * FROM "users" WHERE email LIKE 'qwe' LIMIT 1
+
+2024/05/21 21:23:02 [31;1m/home/gerald/Desktop/scripts/project-resume/resume-backend/service/user.go:48 [35;1mrecord not found
+[0m[33m[1.864ms] [34;1m[rows:0][0m SELECT * FROM "users" WHERE email LIKE 'qwe' LIMIT 1
+
+2024/05/21 21:23:02 [31;1m/home/gerald/Desktop/scripts/project-resume/resume-backend/service/user.go:48 [35;1mrecord not found
+[0m[33m[0.513ms] [34;1m[rows:0][0m SELECT * FROM "users" WHERE email LIKE 'qwe' LIMIT 1
+
+2024/05/21 21:26:54 [32m/home/gerald/Desktop/scripts/project-resume/resume-backend/service/user.go:48
+[0m[33m[1.805ms] [34;1m[rows:1][0m SELECT * FROM "users" WHERE email LIKE 'g@g.g' LIMIT 1

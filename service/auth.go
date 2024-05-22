@@ -10,7 +10,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func UserRegister(ctx context.Context, input model.NewUser) (interface{}, error){
+func UserRegister(ctx context.Context, input model.NewUser) (*model.AuthResponse, error){
 	_, err := UserGetByEmail(ctx, input.Email)
 	if err != nil {
 
@@ -29,12 +29,15 @@ func UserRegister(ctx context.Context, input model.NewUser) (interface{}, error)
 		return nil, err
 	}
 
-	return map[string]interface{}{
-		"token": token,
-	}, nil
+	response := &model.AuthResponse{
+		Token: token,
+		User: createdUser,
+	}
+
+	return response, nil
 }
 
-func UserLogin(ctx context.Context, email string, password string) (interface{}, error){
+func UserLogin(ctx context.Context, email string, password string) (*model.AuthResponse, error){
 	getUser, err := UserGetByEmail(ctx, email)
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
@@ -53,8 +56,11 @@ func UserLogin(ctx context.Context, email string, password string) (interface{},
 	if err != nil {
 		return nil, err
 	}
+	
+	response := &model.AuthResponse{
+		Token: token,
+		User: getUser,
+	}
 
-	return map[string]interface{}{
-		"token": token,
-	},nil
+	return response ,nil
 }

@@ -2,53 +2,127 @@ package service
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
+	"net/http"
 	"os"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
+	"github.com/geraldhoxha/resume-backend/graph/model"
 )
 
 type JwtCustomClaim struct {
+	ID   string `json:"id"`
+	Name string `json:"name"`
+	jwt.StandardClaims
+}
+type JwtRefreshToken struct {
+	ID   string `json:"id"`
+	Name string `json:"name"`
+	jwt.StandardClaims
+}
+type CustomClaims struct {
 	ID string `json:"id"`
 	Name string `json:"name"`
 	jwt.StandardClaims
 }
 
-var jwtSecret = []byte(getJwtSecret())
+var (
+	jwtSecret        = []byte(getJwtSecret("ACCESS_JWT"))
+	refreshJwtSecret = []byte(getJwtSecret("REFRESH_JWT"))
+)
 
-func getJwtSecret() string {
-	secret := os.Getenv("JWT_SECRET")
-	//ERROR: Check this and return error
+func getJwtSecret(secret_for string) string {
+	secret := os.Getenv(secret_for)
+	// ERROR: Check this and return error
 	if secret == "" {
 		return "testing"
 	}
 	return secret
 }
 
-func JwtGenerate(ctx context.Context, userID string, userName string) (string, error) {
-	t := jwt.NewWithClaims(jwt.SigningMethodHS256, &JwtCustomClaim{
-		ID: userID,
+func JwtGenerate(ctx context.Context, userID string, userName string) (*model.JwtToken, error) {
+	a_Token := jwt.NewWithClaims(jwt.SigningMethodHS256, &JwtCustomClaim{
+		ID:   userID,
 		Name: userName,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(time.Hour * 1).Unix(),
-			IssuedAt: time.Now().Unix(),
+			IssuedAt:  time.Now().Unix(),
+		},
+	})
+	r_Token := jwt.NewWithClaims(jwt.SigningMethodHS256, &JwtRefreshToken{
+		StandardClaims: jwt.StandardClaims{
+			ExpiresAt: time.Now().Add(time.Hour * 8).Unix(),
+			IssuedAt:  time.Now().Unix(),
 		},
 	})
 
-	token, err := t.SignedString(jwtSecret)
+	accessToken, err := a_Token.SignedString(jwtSecret)
 	if err != nil {
-		fmt.Println()
-		return "", err
+		return nil, err
 	}
-	return token, nil
+	refreshToken, err := r_Token.SignedString(refreshJwtSecret)
+	if err != nil {
+		return nil, err
+	}
+
+	return &model.JwtToken{
+		AccessToken:  accessToken,
+		RefreshToken: refreshToken,
+	}, nil
 }
 
 func JwtValidate(ctx context.Context, token string) (*jwt.Token, error) {
-	return jwt.ParseWithClaims(token, &JwtCustomClaim{}, func(t *jwt.Token)(interface{}, error){
+	return jwt.ParseWithClaims(token, &JwtCustomClaim{}, func(t *jwt.Token) (interface{}, error) {
 		if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("problem signing method")
 		}
 		return jwtSecret, nil
 	})
+}
+
+func RefreshToken(w http.ResponseWriter, r *http.Request) {
+	var request struct {
+		RefreshToken string `json:"refreshToken"`
+	}
+	ctx := r.Context()
+	
+	err := json.NewDecoder(r.Body).Decode(&request)
+	if err != nil {
+		http.Error(w, "Wrong body", http.StatusBadRequest)
+		return
+	}
+
+	token, err := jwt.Parse(request.RefreshToken, func(t *jwt.Token)(interface{}, error){
+		if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok{
+			return nil, fmt.Errorf("signing problem")
+		}
+		return refreshJwtSecret, nil
+	})
+	
+	if err != nil || !token.Valid {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	claims, ok := token.Claims.(jwt.MapClaims)
+	if !ok{
+		http.Error(w, "Wth", http.StatusUnauthorized)
+		return
+	}
+	user := claims["id"].(string)
+	name := claims["name"].(string)
+
+	tokenPair, err := JwtGenerate(ctx, user, name)
+	if err != nil {
+		http.Error(w, "SOmething went wrong", http.StatusNotFound)
+		return
+	}
+	
+	response := map[string]*model.JwtToken{
+		"response": tokenPair,
+	}
+	w.Header().Set("Content-Type", "application/json")	
+	json.NewEncoder(w).Encode(response)
 }

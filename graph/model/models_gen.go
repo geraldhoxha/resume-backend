@@ -3,8 +3,13 @@
 package model
 
 type AuthOps struct {
-	Login    interface{} `json:"login"`
-	Register interface{} `json:"register"`
+	Login    *AuthResponse `json:"login"`
+	Register *AuthResponse `json:"register"`
+}
+
+type AuthResponse struct {
+	Token *JwtToken `json:"token"`
+	User  *User     `json:"user"`
 }
 
 type Mutation struct {

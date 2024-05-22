@@ -36,9 +36,20 @@ input NewUser {
   password: String!
 }
 
+type JwtToken {
+  accessToken: String!
+  refreshToken: String!
+}
+
+type AuthResponse {
+  token: JwtToken!,
+  user: User!
+}
+
+
 type AuthOps {
-  login(email: String!, password: String!): Any! @goField(forceResolver: true)
-  register(input: NewUser!): Any! @goField(forceResolver: true)
+  login(email: String!, password: String!): AuthResponse! @goField(forceResolver: true)
+  register(input: NewUser!): AuthResponse! @goField(forceResolver: true)
 }
 
 type Mutation {

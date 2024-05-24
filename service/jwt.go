@@ -15,6 +15,7 @@ import (
 type JwtCustomClaim struct {
 	ID   string `json:"id"`
 	Name string `json:"name"`
+	Email string `json:"email"`
 	jwt.StandardClaims
 }
 type JwtRefreshToken struct {
@@ -42,10 +43,11 @@ func getJwtSecret(secret_for string) string {
 	return secret
 }
 
-func JwtGenerate(ctx context.Context, userID string, userName string) (*model.JwtToken, error) {
+func JwtGenerate(ctx context.Context, userID string, userName string, userEmail string) (*model.JwtToken, error) {
 	a_Token := jwt.NewWithClaims(jwt.SigningMethodHS256, &JwtCustomClaim{
 		ID:   userID,
 		Name: userName,
+		Email: userEmail,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(time.Hour * 1).Unix(),
 			IssuedAt:  time.Now().Unix(),
@@ -113,8 +115,9 @@ func RefreshToken(w http.ResponseWriter, r *http.Request) {
 	}
 	user := claims["id"].(string)
 	name := claims["name"].(string)
+	email := claims["email"].(string)
 
-	tokenPair, err := JwtGenerate(ctx, user, name)
+	tokenPair, err := JwtGenerate(ctx, user, name, email)
 	if err != nil {
 		http.Error(w, "SOmething went wrong", http.StatusNotFound)
 		return

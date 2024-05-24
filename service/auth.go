@@ -24,7 +24,7 @@ func UserRegister(ctx context.Context, input model.NewUser) (*model.AuthResponse
 		return nil, err
 	}
 
-	token, err := JwtGenerate(ctx, createdUser.ID, createdUser.Name)
+	token, err := JwtGenerate(ctx, createdUser.ID, createdUser.Name, createdUser.Email)
 	if err != nil {
 		return nil, err
 	}
@@ -52,7 +52,7 @@ func UserLogin(ctx context.Context, email string, password string) (*model.AuthR
 		return nil, err
 	}
 
-	token, err := JwtGenerate(ctx, getUser.ID, getUser.Name)
+	token, err := JwtGenerate(ctx, getUser.ID, getUser.Name, getUser.Email)
 	if err != nil {
 		return nil, err
 	}

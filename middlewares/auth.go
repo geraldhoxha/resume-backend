@@ -12,10 +12,7 @@ type authString string
 
 func AuthMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request){
-		fmt.Println("AuthPassCheck")
 		auth := r.Header.Get("Authorization")
-
-		fmt.Println("AuthPassCheck", auth)
 		
 		if auth == "" {
 			next.ServeHTTP(w, r)

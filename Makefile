@@ -14,7 +14,7 @@ clean:
 
 gen: create_tools
 	go mod tidy
-	go generate ./..
+	go generate ./...
 	go run github.com/99designs/gqlgen generate
 	rm $(TOOLS_FILE)
 

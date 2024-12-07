@@ -19,3 +19,7 @@ tasks:
       - go generate ./...
       - go run github.com/99designs/gqlgen generate
       - '{{.SHELL}} rm {{.TOOLS_FILE}}'
+  lint:
+    cmds:
+      - go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.62.2
+      - golangci-lint run

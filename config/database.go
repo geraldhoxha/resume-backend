@@ -24,7 +24,10 @@ func GetDB() *gorm.DB {
 }
 
 func init() {
-	godotenv.Load()
+	err := godotenv.Load()
+	if err != nil {
+		panic(err)
+	}
 	connectDatabase()
 }
 

@@ -6,6 +6,10 @@ run:
 run-server:
 	go run server.go
 
+lint:
+	go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.62.2
+	golangci-lint run
+
 build:
 	go build .
 

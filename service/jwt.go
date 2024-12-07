@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 	"time"
@@ -13,8 +14,8 @@ import (
 )
 
 type JwtCustomClaim struct {
-	ID   string `json:"id"`
-	Name string `json:"name"`
+	ID    string `json:"id"`
+	Name  string `json:"name"`
 	Email string `json:"email"`
 	jwt.StandardClaims
 }
@@ -24,7 +25,7 @@ type JwtRefreshToken struct {
 	jwt.StandardClaims
 }
 type CustomClaims struct {
-	ID string `json:"id"`
+	ID   string `json:"id"`
 	Name string `json:"name"`
 	jwt.StandardClaims
 }
@@ -45,8 +46,8 @@ func getJwtSecret(secret_for string) string {
 
 func JwtGenerate(ctx context.Context, userID string, userName string, userEmail string) (*model.JwtToken, error) {
 	a_Token := jwt.NewWithClaims(jwt.SigningMethodHS256, &JwtCustomClaim{
-		ID:   userID,
-		Name: userName,
+		ID:    userID,
+		Name:  userName,
 		Email: userEmail,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(time.Hour * 1).Unix(),
@@ -89,27 +90,27 @@ func RefreshToken(w http.ResponseWriter, r *http.Request) {
 		RefreshToken string `json:"refreshToken"`
 	}
 	ctx := r.Context()
-	
+
 	err := json.NewDecoder(r.Body).Decode(&request)
 	if err != nil {
 		http.Error(w, "Wrong body", http.StatusBadRequest)
 		return
 	}
 
-	token, err := jwt.Parse(request.RefreshToken, func(t *jwt.Token)(interface{}, error){
-		if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok{
+	token, err := jwt.Parse(request.RefreshToken, func(t *jwt.Token) (interface{}, error) {
+		if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("signing problem")
 		}
 		return refreshJwtSecret, nil
 	})
-	
+
 	if err != nil || !token.Valid {
 		http.Error(w, "Unauthorized", http.StatusUnauthorized)
 		return
 	}
 
 	claims, ok := token.Claims.(jwt.MapClaims)
-	if !ok{
+	if !ok {
 		http.Error(w, "Wth", http.StatusUnauthorized)
 		return
 	}
@@ -122,10 +123,13 @@ func RefreshToken(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "SOmething went wrong", http.StatusNotFound)
 		return
 	}
-	
+
 	response := map[string]*model.JwtToken{
 		"response": tokenPair,
 	}
-	w.Header().Set("Content-Type", "application/json")	
-	json.NewEncoder(w).Encode(response)
+	w.Header().Set("Content-Type", "application/json")
+	err = json.NewEncoder(w).Encode(response)
+	if err != nil {
+		log.Fatal(err)
+	}
 }

@@ -23,32 +23,38 @@ func GetDB() *gorm.DB {
 	return db
 }
 
-func init(){
-	godotenv.Load()
+func init() {
+	err := godotenv.Load()
+	if err != nil {
+		panic(err)
+	}
 	connectDatabase()
 }
 
 func connectDatabase() {
+	var (
+		host     = os.Getenv("DB_HOST")
+		user     = os.Getenv("DB_USER")
+		password = os.Getenv("DB_PASSWORD")
+		dbname   = os.Getenv("DB_DATABASE")
+		port     = os.Getenv("DB_PORT")
+	)
 	psqlDns := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable",
-		os.Getenv("DB_HOST"),
-		os.Getenv("DB_USER"),
-		os.Getenv("DB_PASSWORD"),
-		os.Getenv("DB_DATABASE"),
-		os.Getenv("DB_PORT"),
-	)	
+		host, user, password, dbname, port,
+	)
 	var err error
-	
+
 	// db, err = gorm.Open(mysql.Open(databaseConfig), initConfig())
 	db, err = gorm.Open(postgres.Open(psqlDns), initConfig())
 	if err != nil {
-		fmt.Printf("%s. Err: %s",psqlDns, err.Error())
+		fmt.Printf("%s. Err: %s", psqlDns, err.Error())
 		panic("Fail To Connect Database")
 	}
 }
 
 func initConfig() *gorm.Config {
-	return &gorm.Config {
-		Logger: initLog(),
+	return &gorm.Config{
+		Logger:         initLog(),
 		NamingStrategy: initNamingStrategy(),
 	}
 }
@@ -56,16 +62,16 @@ func initConfig() *gorm.Config {
 func initLog() logger.Interface {
 	f, _ := os.Create("gorm.log")
 	newLogger := logger.New(log.New(io.MultiWriter(f), "\r\n", log.LstdFlags), logger.Config{
-		Colorful: true,
-		LogLevel: logger.Info,
+		Colorful:      true,
+		LogLevel:      logger.Info,
 		SlowThreshold: time.Second,
 	})
 	return newLogger
 }
 
 func initNamingStrategy() *schema.NamingStrategy {
-	return &schema.NamingStrategy {
+	return &schema.NamingStrategy{
 		SingularTable: false,
-		TablePrefix: "",
+		TablePrefix:   "",
 	}
 }

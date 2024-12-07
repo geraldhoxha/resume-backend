@@ -1,0 +1,25 @@
+
+version: '3'
+
+vars:
+  TOOLS_FILE: ./tools/tools.go
+  SHELL: '{{if eq .OS "Windows_NT"}}powershell{{end}}'
+
+tasks:
+  create_tools:
+    - echo 'package tools' > {{.TOOLS_FILE}}
+    - echo 'import (' >> ./tools/tools.go
+    - echo ' _ "github.com/99designs/gqlgen"' >> {{.TOOLS_FILE}}
+    - echo ')' >> {{.TOOLS_FILE}}
+  
+  gen:
+    deps: [create_tools]
+    cmds:
+      - go mod tidy
+      - go generate ./...
+      - go run github.com/99designs/gqlgen generate
+      - '{{.SHELL}} rm {{.TOOLS_FILE}}'
+  lint:
+    cmds:
+      - go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.62.2
+      - golangci-lint run

@@ -7,5 +7,8 @@ import (
 
 func MigrateTable() {
 	db := config.GetDB()
-	db.AutoMigrate(&model.User{})
+	err := db.AutoMigrate(&model.User{})
+	if err != nil {
+		panic(err)
+	}
 }

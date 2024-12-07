@@ -3,12 +3,40 @@ version: "3.9"
 services:
   postgres_db:
     image: postgres:latest
-    container_name: pg_db
+    container_name: database
     ports:
       - 5432:5432
+    networks:
+      myAppNetwork:
+        aliases:
+          - pghost
     volumes:
       - ~/apps/pg_db:/var/lib/postgresql/data
     environment:
       - POSTGRES_PASSWORD=SECRET
       - POSTGRES_USER=pguser
       - POSTGRES_DB=pg_db
+
+  myapp:
+    build: .
+    container_name: "backend"
+    ports:
+      - 8080:8080
+    environment:
+      - DB_HOST=pghost
+      - DB_PORT=5432
+      - DB_DATABASE=pg_db
+      - DB_USER=pguser
+      - DB_PASSWORD=SECRET
+    depends_on:
+      - postgres_db
+    networks:
+      - myAppNetwork
+    command: ["./wait-for-it.sh", "pghost:5432", "--","sh", "-c", "./run-all.sh 2>&1 | tee serverlogs_$(date '+%Y-%m-%d-%H').log"]
+
+networks:
+  myAppNetwork:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16

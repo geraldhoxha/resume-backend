@@ -6,6 +6,10 @@ run:
 run-server:
 	go run server.go
 
+lint:
+	go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.62.2
+	golangci-lint run
+
 build:
 	go build .
 
@@ -22,7 +26,10 @@ dbconnect:
 	docker exec -it pg_db psql -U pguser -W pg_db
 
 dbinit:
-	migrate -path sql -database "postgres://pguser:SECRET@127.0.0.1:5432/pg_db?sslmode=disable" up
+	migrate -path sql -database "postgres://pguser:SECRET@pghost:5432/pg_db?sslmode=disable" up
+
+dockemigrate:
+	docker run -v {{ migration dir }}:/migrations --network host migrate/migrate -path=/migrations/ -database postgres://pghost:5432/database up
 
 create_tools:
 	@echo 'package tools' > $(TOOLS_FILE)

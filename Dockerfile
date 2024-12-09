@@ -1,4 +1,4 @@
-FROM golang:1.23.3
+FROM golang:1.23.3-alpine AS builder
 
 WORKDIR /app
 
@@ -7,8 +7,17 @@ RUN go mod download
 
 COPY . .
 
-RUN go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
-RUN CGO_ENABLED=0 GOOS=linux go build -o ./main
-RUN chmod +x ./wait-for-it.sh ./run-all.sh
+RUN go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@latest \
+    && CGO_ENABLED=0 GOOS=linux go build -o ./main
 
-EXPOSE 8080
+
+
+FROM alpine:latest
+
+WORKDIR /app
+
+COPY --from=builder /app/main /app/wait-for-it.sh /app/run-all.sh /app/
+RUN apk update && apk upgrade && apk add bash && apk add dos2unix \
+    && chmod +x /app/main /app/wait-for-it.sh /app/run-all.sh \
+    && find ./ type f -name "*.sh" -print0 | xargs -0 dos2unix \
+    && apk del dos2unix

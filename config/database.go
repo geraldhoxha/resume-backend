@@ -7,7 +7,6 @@ import (
 	"os"
 	"time"
 
-	"github.com/joho/godotenv"
 	// "gorm.io/driver/mysql"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -24,10 +23,6 @@ func GetDB() *gorm.DB {
 }
 
 func init() {
-	err := godotenv.Load()
-	if err != nil {
-		panic(err)
-	}
 	connectDatabase()
 }
 

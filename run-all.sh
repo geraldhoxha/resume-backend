@@ -1,7 +1,4 @@
-#!/usr/bin/env bash
-
-echo "Running migrate"
-migrate -path sql -database "postgres://pguser:SECRET@pghost:5432/pg_db?sslmode=disable" up
+#!/bin/bash
 echo "
   _________ __                 __  .__                
  /   _____//  |______ ________/  |_|__| ____    ____  
@@ -16,4 +13,4 @@ __________                __                      .___
  |______  /(____  /\___  >__|_ \\___  >___|  /\____ | 
         \/      \/     \/     \/    \/     \/      \/ 
 "
-./main
+/app/main

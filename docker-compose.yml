@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   postgres_db:
-    image: postgres:latest
+    image: postgres:17.2-alpine
     container_name: database
     ports:
       - 5432:5432
@@ -11,29 +11,31 @@ services:
         aliases:
           - pghost
     volumes:
-      - ~/apps/pg_db:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_PASSWORD=SECRET
-      - POSTGRES_USER=pguser
-      - POSTGRES_DB=pg_db
-
+      - ./.localdb:/var/lib/postgresql/data
+    env_file: .env
+    healthcheck:
+      test: ["CMD-SHELL","sh -c 'pg_isready -U ${DB_USER} -d ${DB_DATABASE}'"]
+      interval: 10s
+      timeout: 60s
+      retries: 5
+      start_period: 10s
   myapp:
-    build: .
+    build:
+      context: .
     container_name: "backend"
     ports:
       - 8080:8080
-    environment:
-      - DB_HOST=pghost
-      - DB_PORT=5432
-      - DB_DATABASE=pg_db
-      - DB_USER=pguser
-      - DB_PASSWORD=SECRET
+    expose:
+      - 8080
+    env_file: .env
     depends_on:
-      - postgres_db
+      postgres_db:
+        condition: service_healthy
     networks:
       - myAppNetwork
-    command: ["./wait-for-it.sh", "pghost:5432", "--","sh", "-c", "./run-all.sh 2>&1 | tee serverlogs_$(date '+%Y-%m-%d-%H').log"]
-
+    command: ["/app/wait-for-it.sh", "${DB_HOST}:${DB_PORT}", "--","sh", "-c", "/app/run-all.sh 2>&1 | tee /app/logs/serverlogs_$(date '+%Y-%m-%d-%H').log"]
+    volumes:
+      - ./logs:/app/logs
 networks:
   myAppNetwork:
     driver: bridge

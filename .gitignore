@@ -1,4 +1,5 @@
 gorm.log
 .vscode
 .localdb
+.TODO_LOCAL.md
 logs/

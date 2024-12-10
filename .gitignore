@@ -1,2 +1,4 @@
 gorm.log
 .vscode
+.localdb
+logs/

@@ -16,7 +16,10 @@ FROM alpine:latest
 
 WORKDIR /app
 
+COPY --from=builder /go/bin/migrate /usr/local/bin/migrate
+COPY --from=builder /app/sql /app/sql
 COPY --from=builder /app/main /app/wait-for-it.sh /app/run-all.sh /app/
+
 RUN apk update && apk upgrade && apk add bash && apk add dos2unix \
     && chmod +x /app/main /app/wait-for-it.sh /app/run-all.sh \
     && find ./ type f -name "*.sh" -print0 | xargs -0 dos2unix \

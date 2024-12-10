@@ -11,16 +11,17 @@ services:
         aliases:
           - pghost
     volumes:
-      - ~/apps/pg_db:/var/lib/postgresql/data
+      - ./.localdb:/var/lib/postgresql/data
     env_file: .env
     healthcheck:
-      test: ["CMD-SHELL","sh -c 'pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}'"]
+      test: ["CMD-SHELL","sh -c 'pg_isready -U ${DB_USER} -d ${DB_DATABASE}'"]
       interval: 10s
       timeout: 60s
       retries: 5
       start_period: 10s
   myapp:
-    build: .
+    build:
+      context: .
     container_name: "backend"
     ports:
       - 8080:8080
@@ -32,15 +33,12 @@ services:
         condition: service_healthy
     networks:
       - myAppNetwork
-    command: ["/app/wait-for-it.sh", "pghost:5432", "--","sh", "-c", "/app/run-all.sh 2>&1 | tee serverlogs_$(date '+%Y-%m-%d-%H').log"]
+    command: ["/app/wait-for-it.sh", "${DB_HOST}:${DB_PORT}", "--","sh", "-c", "/app/run-all.sh 2>&1 | tee /app/logs/serverlogs_$(date '+%Y-%m-%d-%H').log"]
     volumes:
-      - .\logs:./logs
+      - ./logs:/app/logs
 networks:
   myAppNetwork:
     driver: bridge
     ipam:
       config:
         - subnet: 172.20.0.0/16
-volumes:
-  logs:
-    driver: local

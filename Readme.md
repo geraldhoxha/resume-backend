@@ -1,6 +1,6 @@
 # CRLF Input Warning
 If his warning appears
-> LF will be replaced by CRLF the next time Git touches it.
+> LF will be replaced by CRLF the next time Git touches it
 
 ...run...
 

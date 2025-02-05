@@ -12,7 +12,7 @@ require (
 	github.com/gorilla/mux v1.8.1
 	github.com/vektah/gqlparser/v2 v2.5.22
 	golang.org/x/crypto v0.31.0
-	gorm.io/driver/postgres v1.5.7
+	gorm.io/driver/postgres v1.5.11
 	gorm.io/gorm v1.25.12
 )
 

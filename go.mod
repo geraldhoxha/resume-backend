@@ -10,14 +10,14 @@ require (
 	github.com/google/uuid v1.6.0
 	github.com/gorilla/handlers v1.5.2
 	github.com/gorilla/mux v1.8.1
-	github.com/vektah/gqlparser/v2 v2.5.15
+	github.com/vektah/gqlparser/v2 v2.5.22
 	golang.org/x/crypto v0.31.0
 	gorm.io/driver/postgres v1.5.7
 	gorm.io/gorm v1.25.12
 )
 
 require (
-	github.com/agnivade/levenshtein v1.1.1 // indirect
+	github.com/agnivade/levenshtein v1.2.0 // indirect
 	github.com/felixge/httpsnoop v1.0.3 // indirect
 	github.com/gorilla/websocket v1.5.0 // indirect
 	github.com/hashicorp/golang-lru/v2 v2.0.7 // indirect

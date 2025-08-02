@@ -1,5 +1,5 @@
 TOOLS_FILE:=./tools/tools.go
-
+GOLANGCI:=2.1.5
 run:
 	go run main.go
 
@@ -7,7 +7,7 @@ run-server:
 	go run server.go
 
 lint:
-	go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.62.2
+	go install github.com/golangci/golangci-lint/cmd/golangci-lint@$(GOLANGCI)
 	golangci-lint run
 
 build:
@@ -34,5 +34,5 @@ dockemigrate:
 create_tools:
 	@echo 'package tools' > $(TOOLS_FILE)
 	@echo 'import (' >> $(TOOLS_FILE)
-	@echo ' _ "github.com/99designs/gqlgen"' >> $(TOOLS_FILE)
+	@echo ' _ "github.com/99designs/v1.62.2gqlgen"' >> $(TOOLS_FILE)
 	@echo ')' >> $(TOOLS_FILE)

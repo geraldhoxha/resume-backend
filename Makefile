@@ -1,5 +1,5 @@
 TOOLS_FILE:=./tools/tools.go
-GOLANGCI:=2.1.5
+GOLANGCI:=v2.3.0
 run:
 	go run main.go
 
@@ -7,7 +7,7 @@ run-server:
 	go run server.go
 
 lint:
-	go install github.com/golangci/golangci-lint/cmd/golangci-lint@$(GOLANGCI)
+	go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@$(GOLANGCI)
 	golangci-lint run
 
 build:
@@ -23,7 +23,7 @@ gen: create_tools
 	rm $(TOOLS_FILE)
 
 dbconnect:
-	docker exec -it pg_db psql -U pguser -W pg_db
+	docker exec -it pg_db psql -U pguser -W pg_db5
 
 dbinit:
 	migrate -path sql -database "postgres://pguser:SECRET@pghost:5432/pg_db?sslmode=disable" up
@@ -34,5 +34,5 @@ dockemigrate:
 create_tools:
 	@echo 'package tools' > $(TOOLS_FILE)
 	@echo 'import (' >> $(TOOLS_FILE)
-	@echo ' _ "github.com/99designs/v1.62.2gqlgen"' >> $(TOOLS_FILE)
+	@echo ' _ "github.com/99designs/gqlgen"' >> $(TOOLS_FILE)
 	@echo ')' >> $(TOOLS_FILE)

@@ -3,12 +3,12 @@ module github.com/geraldhoxha/resume-backend
 go 1.24.1
 
 require (
-	github.com/99designs/gqlgen v0.17.81
+	github.com/99designs/gqlgen v0.17.82
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/google/uuid v1.6.0
 	github.com/gorilla/handlers v1.5.2
 	github.com/gorilla/mux v1.8.1
-	github.com/vektah/gqlparser/v2 v2.5.30
+	github.com/vektah/gqlparser/v2 v2.5.31
 	golang.org/x/crypto v0.43.0
 	gorm.io/driver/postgres v1.6.0
 	gorm.io/gorm v1.31.1

@@ -9,25 +9,28 @@ import (
 	"os"
 	"time"
 
-	"github.com/dgrijalva/jwt-go"
 	"github.com/geraldhoxha/resume-backend/graph/model"
+	"github.com/golang-jwt/jwt/v5"
 )
 
 type JwtCustomClaim struct {
 	ID    string `json:"id"`
 	Name  string `json:"name"`
 	Email string `json:"email"`
-	jwt.StandardClaims
+	// jwt.StandardClaims
+	jwt.RegisteredClaims
 }
 type JwtRefreshToken struct {
 	ID   string `json:"id"`
 	Name string `json:"name"`
-	jwt.StandardClaims
+	// jwt.StandardClaims
+	jwt.RegisteredClaims
 }
 type CustomClaims struct {
 	ID   string `json:"id"`
 	Name string `json:"name"`
-	jwt.StandardClaims
+	// jwt.StandardClaims
+	jwt.RegisteredClaims
 }
 
 var (
@@ -49,15 +52,15 @@ func JwtGenerate(ctx context.Context, userID string, userName string, userEmail 
 		ID:    userID,
 		Name:  userName,
 		Email: userEmail,
-		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: time.Now().Add(time.Hour * 1).Unix(),
-			IssuedAt:  time.Now().Unix(),
+		RegisteredClaims: jwt.RegisteredClaims{
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour * 1)),
+			IssuedAt:  jwt.NewNumericDate(time.Now()),
 		},
 	})
 	r_Token := jwt.NewWithClaims(jwt.SigningMethodHS256, &JwtRefreshToken{
-		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: time.Now().Add(time.Hour * 8).Unix(),
-			IssuedAt:  time.Now().Unix(),
+		RegisteredClaims: jwt.RegisteredClaims{
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour * 8)),
+			IssuedAt:  jwt.NewNumericDate(time.Now()),
 		},
 	})
 
@@ -77,7 +80,7 @@ func JwtGenerate(ctx context.Context, userID string, userName string, userEmail 
 }
 
 func JwtValidate(ctx context.Context, token string) (*jwt.Token, error) {
-	return jwt.ParseWithClaims(token, &JwtCustomClaim{}, func(t *jwt.Token) (interface{}, error) {
+	return jwt.ParseWithClaims(token, &JwtCustomClaim{}, func(t *jwt.Token) (any, error) {
 		if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("problem signing method")
 		}

@@ -1,5 +1,5 @@
 TOOLS_FILE:=./tools/tools.go
-GOLANGCI:=v2.3.0
+GOLANGCI:=v2.6.2
 run:
 	go run main.go
 

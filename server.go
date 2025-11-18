@@ -42,7 +42,12 @@ func main() {
 	// defer database
 	db := config.GetDB()
 	sqlDB, _ := db.DB()
-	defer sqlDB.Close()
+	defer func() {
+		err := sqlDB.Close()
+		if err != nil {
+			panic(err)
+		}
+	}()
 
 	// Create a new router
 	router := mux.NewRouter()
@@ -73,5 +78,5 @@ func main() {
 
 	// Start the server
 	log.Fatal(http.ListenAndServe(":"+port, CORS(router)))
-	
+
 }

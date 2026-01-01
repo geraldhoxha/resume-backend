@@ -3,7 +3,7 @@ module github.com/geraldhoxha/resume-backend
 go 1.24.1
 
 require (
-	github.com/99designs/gqlgen v0.17.82
+	github.com/99designs/gqlgen v0.17.85
 	github.com/golang-jwt/jwt/v5 v5.3.0
 	github.com/google/uuid v1.6.0
 	github.com/gorilla/handlers v1.5.2
@@ -27,6 +27,6 @@ require (
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.5 // indirect
 	github.com/sosodev/duration v1.3.1 // indirect
-	golang.org/x/sync v0.17.0 // indirect
-	golang.org/x/text v0.30.0 // indirect
+	golang.org/x/sync v0.19.0 // indirect
+	golang.org/x/text v0.32.0 // indirect
 )
